@@ -17,7 +17,8 @@ steps:
   stateStoreName: nebula9
   masterCount: 3
   nodeCount: 3
-  zones: us-west-2
+  zones: 'a,b,c'
+  region: us-west-2
 - name: echo
   image: alpine:latest
   input:
