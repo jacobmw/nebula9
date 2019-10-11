@@ -1,0 +1,24 @@
+version: v1
+description: Nebula Deploy Demo
+
+parameters:
+  project:
+    description: Test Nebula 9
+
+steps:
+- name: provision-kubernetes
+  description: ""
+  provider: aws
+  clusterName: k8s.local
+  credentials:
+    awsAccessKeyID:
+      $type: Secret
+      name: awsAccessKeyID
+    awsSecretAccessKey:
+      $type: Secret
+      name: awsSecretAccessKeyID
+    sshPublicKey:
+  stateStoreName: nebula9
+  masterCount: 3
+  nodeCount: 3
+  zones: us-west-2

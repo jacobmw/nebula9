@@ -1,0 +1,44 @@
+version: v1
+description: Workflow to echo a nice hello world message to the logs
+
+steps:
+- name: provision-kubernetes
+  description: ""
+  provider: aws
+  clusterName: k8s.local
+  credentials:
+    awsAccessKeyID:
+      $type: Secret
+      name: awsAccessKeyID
+    awsSecretAccessKey:
+      $type: Secret
+      name: awsSecretAccessKeyID
+    sshPublicKey:
+  stateStoreName: nebula9
+  masterCount: 3
+  nodeCount: 3
+  zones: us-west-2
+- name: echo
+  image: alpine:latest
+  input:
+  - echo "Hello world. I am $(whoami)"
+  - cat /nebula/spec.json
+  spec:
+    hello: world
+  dependsOn:
+  - deploy_test_cluster
+- name: ls
+  image: alpine:latest
+  command: ls
+  args:
+  - "-la"
+  - "/"
+  dependsOn:
+    - echo
+- name: ps
+  image: alpine:latest
+  command: ps
+  args:
+  - "-a"
+  dependsOn:
+    - echo
